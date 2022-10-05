@@ -1,0 +1,179 @@
+---
+title: "beginningDS with R"
+author: "Umair Waseem"
+date: "2022-09-29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+library(tidyverse)
+library(lubridate)
+library(dplyr)
+library(magrittr)
+
+
+
+```
+
+
+## Data Manipulation with R
+
+There are preloaded data set in R
+
+```{r cars}
+library(datasets)
+data(cars)
+head(cars)
+
+
+cars %>%
+  
+  plot(dist~speed, data =.)
+
+
+
+```
+
+## Quick Reviewing Data
+
+
+```{r}
+library(mlbench)
+
+cars |> head(3)
+
+cars |>tail(3)
+
+summary(cars)
+```
+Lets try another built in dataset
+
+```{r}
+
+data("iris")
+iris |> summary()
+
+
+```
+Summary you get depends on the types the columns we have. Numerical data is summarized by their quantiles, while categorical and Boolean data ins summarized by count. 
+
+To see the type of each column, you can use the 'str()' function. This gives you the structure of a data type and is much more general than we need here, but it does give you an overview of the types of columns in a data frame and is very useful for that:
+
+```{r}
+data("iris")
+iris |> str()
+
+
+```
+## Reading Data
+read.table()
+read.csv()
+
+* _header_ : This is a boolean value telling the function whether it should be consider the first line or not. If set to true, it uses the first line to the column names of the data frame it constructs; if is set to false, the first line is interpreted as the first row in the dataframe.
+
+* _col.names:_ If the first line is not used to specify the header, you can use this option to name the columns. You need to give it a vector of strings with a string for each column in the input. 
+
+* _dec_: This is the decimal point used in numbers. I get spreadsheets that use both "." and "," for decimal points, so this is an important parameter. 
+
+* _comment.char:_ By default, the functin assumes that "#" is the start of a comment and ignores the rest of a line when it sees it. If "#" is actually used in your data, you need to change this. The same goes if comments are indicated with a different symbol. 
+
+* _colClasses:_ This let you specify which type each column should have. You can speicify that some columns should b factors, and others should be strings. Using it will speed up the function for large data sets since R then doesn't have ot figure out the column type. 
+
+
+
+## Examples of Reading and Formatting Data Sets
+
+### Brest Cancer Data set
+
+```{r BCancer}
+library("mlbench")
+library("readr")
+data_url <- "https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/breast-cancer-wisconsin.data"
+
+lines <- readLines(data_url)   # Data saved to variable explicitly and then reading first lines
+
+
+
+
+```
+Its a set of comma separated values without a header line. So I save the data with the ".csv" suffix. 
+
+```{r}
+
+
+writeLines(lines, con = "Data/raw-breast-cancer.csv")
+
+
+
+
+
+```
+```{r}
+raw_breast_cancer <- read.csv("Data/raw-breast-cancer.csv" )
+
+raw_breast_cancer |> head(4)
+
+raw_breast_cancer <- read.csv(data_url)  # Once you know data is csv , directly save to data set with read.csv function
+raw_breast_cancer <- read.csv("Data/raw-breast-cancer.csv", header = FALSE)
+raw_breast_cancer |> head(4)
+
+```
+
+
+
+
+
+
+```{r}
+data("BreastCancer")
+names(raw_breast_cancer) <- names(BreastCancer)
+
+raw_breast_cancer |> head(3)
+
+```
+
+
+
+It encodes classes as numbers (the web page data doc of data specifies 2 for benign and 4 for malignant)
+We'll do it with a factor. 
+
+
+
+```{r}
+formatted_breast_cancer <- raw_breast_cancer
+
+map_class <- function(x){
+  ifelse(x == 2, "benign",
+  ifelse(x == 4, "malignant" , NA)) 
+  
+}
+
+
+mapped <- formatted_breast_cancer$Class %>% map_class
+mapped |> table()
+
+
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
