@@ -1,0 +1,26 @@
+---
+title: "MachineLearningSupervised"
+author: "Umair Waseem"
+date: "2022-10-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Machine Learning Supervised
+
+Machine learning concerns learning from data. You do not explicitly develop an algorithm for solving a particular problem. You use a generic algorithm and let it learn how to solve the problem from those.
+
+
+* ## Supervised Learning
+  Supervised learning is used when you have variables you want to predict using other variables--situations like linear regression where you have some input variables for example x and you want a model that predicts output variables y =f(x)
+  
+  
+## Logistic Regression (Classification)
+  
+  Here We'll use the breast cancer data from the mlbench library.
+  Ask if the clump thickness has an effect on the risk of a tumor being malignant. That is we want to see if we can predict the _Class_ variable from C1. 
+  
+  
