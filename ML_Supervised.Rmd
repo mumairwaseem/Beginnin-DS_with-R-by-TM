@@ -23,4 +23,62 @@ Machine learning concerns learning from data. You do not explicitly develop an a
   Here We'll use the breast cancer data from the mlbench library.
   Ask if the clump thickness has an effect on the risk of a tumor being malignant. That is we want to see if we can predict the _Class_ variable from C1. 
   
+```{r}
+library(mlbench)
+library(dplyr)
+library(tidyverse)
+data("BreastCancer")
+BreastCancer |> head()
+
+
+```
+```{r}
+BreastCancer |> 
+  ggplot (aes(x=Cl.thickness, y = Class)) +
+  geom_jitter(height = 0.05, width = 0.3, alpha = 0.4)
+
+
+
+```
+  
+  For classification, We still specify the prediction function y=f(x) using the formula y`x is just binary now. To fi a logistic regression, we need to use the _glm()_ function (generalized linear model) with family set to "binomial". 
+  We cannot fit the breast cancer data with logistic regression. There are two problems:-
+* The breast cancer data set considers the clump thickness order factor, but for logistic regression, we need the input variable to be numeric.. Generally it is not advised to directly translate categorical data into numeric data, but here for this data we can. 
+* The _glm()_ function expects the response variable to be numerical, coding the classes like 0 or 1, while the breast cancer data again encodes the classes as a factor. It little varies from algorithm to algorithm whether a factor or a numerical encoding is expected for classification. 
+  
+  
+```{r}
+BreastCancer |>
+  mutate(Thickness = 
+           as.numeric(as.character(Cl.thickness))) |>
+  mutate(Malignant = ifelse(Class != "benign", 1, 0)) |>
+  ggplot(aes(x = Thickness, y = Malignant)) +
+  geom_jitter(height = 0.05, width = 0.3, alpha = 0.4) +
+  geom_smooth(method ="glm", formula = y~x, 
+              method.args = list(family = "binomial"))
+          
+  
+
+
+
+
+
+
+```
+  
+```{r}
+
+BreastCancer |>
+  mutate(Thickness = 
+           as.numeric(as.character(Cl.thickness))) %>%
+  mutate(Malignant = ifelse(Class != "benign", 1, 0)) %>%
+  glm(Malignant ~ Thickness,
+      family = "binomial",
+      data = .)
+  
+
+
+
+```
+  
   
