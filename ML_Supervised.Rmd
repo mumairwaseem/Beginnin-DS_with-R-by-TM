@@ -76,7 +76,8 @@ BreastCancer |>
       family = "binomial",
       data = .)
   
-
+# glm(response ~ predictor, family = "binomial", data)
+# The glm() funciton returens a model object, therefore we may apply extroactro functions, such as summay, fited(), or predict() among others. Please not that output numbers are on the logit scale. To actually predict probabilities we need ot provided the predict() function an additional argument _type = "response"_
 
 
 ```
