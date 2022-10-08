@@ -77,9 +77,24 @@ BreastCancer |>
       data = .)
   
 # glm(response ~ predictor, family = "binomial", data)
-# The glm() funciton returens a model object, therefore we may apply extroactro functions, such as summay, fited(), or predict() among others. Please not that output numbers are on the logit scale. To actually predict probabilities we need ot provided the predict() function an additional argument _type = "response"_
+# The glm() function returns a model object, therefore we may apply extractor functions, such as summary(), fitted(), or predict() among others. Please not that output numbers are on the logit scale. To actually predict probabilities we need to provided the predict() function an additional argument _type = "response"_
 
 
 ```
+  ## Evaluating Classification Models
   
+In classification you want to know how many data points are classified correctly and how many are not. 
+As an example here is breast cancer data and fit a model:
+
+```{r}
+
+formatted_data <- BreastCancer |>
+  mutate(Thickness = as.numeric(as.character(Cl.thickness)), 
+         Cell.size = 
+           as.numeric(as.character(Cell.size))) %>%
+  mutate(Malignant = ifelse(Class != "benign", 1, 0))
+                           
+
+```
+
   
