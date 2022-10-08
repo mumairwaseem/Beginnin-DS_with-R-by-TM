@@ -97,4 +97,40 @@ formatted_data <- BreastCancer |>
 
 ```
 
-  
+J
+```{r}
+fitted_model <- formatted_data %>%
+  glm(Malignant ~ Thickness + Cell.size,
+      family = "binomial",
+      data = .)
+
+# to get its predictions we can use _predict()_, but it will be probabilities of a tumor being malignant:
+
+predict(fitted_model, formatted_data, type = "response") |> head()
+
+```
+These are the probabilities and we need to translate them into acutal predictions. The natura choice is if probability > 50% we'll say it Malignant. 
+
+```{r}
+
+classify <- function(probability)
+  ifelse(probability < 0.5, 0, 1)
+
+classified_malignant <- classify(predict(fitted_model, formatted_data))
+
+table(formatted_data$Malignant, classified_malignant)  # confusion matrix
+
+
+
+```
+
+## Confusion Matrix
+
+
+
+
+```{r}
+
+
+```
+
